@@ -1,11 +1,11 @@
 <% include header %>
-    <form>
-        <label for="male">Title</label>
-        <input type="text" id="title">
-        <label for="male">Band</label>
-        <input type="text">
-        <label for="male">Url</label>
-        <input type="text">
+    <form action="/musics" method="post">
+        <label for="newtitle">Title</label>
+        <input type="text" name="newtitle" id="newtitle">
+        <label for="newband">Band</label>
+        <input type="text" name="newband" id="newband">
+        <label for="newurl">Url</label>
+        <input type="text" name="newurl" id="newurl">
         <input type="submit" value="VALIDER">
     </form>
 
