@@ -1,8 +1,26 @@
 let session = require('express-session')
 let bodyParser = require('body-parser')
+let mysql = require('mysql')
 let urlencodedParser = bodyParser.urlencoded({ extended: false });
 let express = require('express') //Framework node
 let app = express()
+
+//DATABASE
+let connection = mysql.createConnection({
+    //Properties...
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: ''
+});
+connection.connect(function(error) {
+    //callback
+    if (!!error) {
+        console.log('Error');
+    } else {
+        console.log('Connected')
+    }
+})
 
 // MOTEUR DE TEMPLATES
 app.set('view engine', 'ejs')
@@ -15,7 +33,7 @@ app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true }
+    cookie: { secure: false }
 }))
 
 // MY ROUTES
@@ -23,19 +41,28 @@ app.get('/', function(request, response) {
     response.render('index') // On affiche la page index.ejs qui est le template de l'accueil
 })
 app.get('/add', function(request, response) {
+    if (request.session.error) {
+        response.locals.error = request.session.error
+    }
     response.render('addsongs') //On affiche la page addsongs.ejs qui est le template de l'accueil
 })
 app.get('/musics', function(request, response) {
     response.render('songs') //On affiche la page songs.ejs qui est le template de la liste de morceaux
+    connection.query('SELECT * FROM databaseName', function(error, rows, fields) {
+        if (!!error) {
+            console.log('Error in the query')
+        } else {
+            console.log('SUCCESS!\n')
+            console.log(rows)
+        }
+
+    })
 })
 
 app.post('/musics', (request, response) => {
     if (request.body.newtitle === undefined || request.body.newtitle === '' || request.body.newband === undefined || request.body.newband === '' || request.body.newurl === undefined || request.body.newurl === '') {
-        response.render('addsongs', {
-            error: "Vous n'avez pas rempli tous les champs "
-        })
-    } else {
-        response.render('songs')
+        request.session.error = "Il y a une erreur"
+        response.redirect('/add')
     }
 })
 
