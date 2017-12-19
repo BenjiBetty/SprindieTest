@@ -35,6 +35,7 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: false }
 }))
+app.use(require('./middlewares/flash'))
 
 // MY ROUTES
 app.get('/', function(request, response) {
@@ -45,6 +46,7 @@ app.get('/add', function(request, response) {
         response.locals.error = request.session.error
     }
     response.render('addsongs') //On affiche la page addsongs.ejs qui est le template de l'accueil
+    console.log(request.session)
 })
 app.get('/musics', function(request, response) {
     response.render('songs') //On affiche la page songs.ejs qui est le template de la liste de morceaux
@@ -61,7 +63,7 @@ app.get('/musics', function(request, response) {
 
 app.post('/musics', (request, response) => {
     if (request.body.newtitle === undefined || request.body.newtitle === '' || request.body.newband === undefined || request.body.newband === '' || request.body.newurl === undefined || request.body.newurl === '') {
-        request.session.error = "Il y a une erreur"
+        request.flash('error', "Vous n'avez pas rempli tous les champs, réessayez")
         response.redirect('/add')
     }
 })

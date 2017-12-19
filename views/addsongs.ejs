@@ -1,8 +1,8 @@
 <% include header %>
 
-    <% if (locals.error){ %>
+    <% if (locals.flash && locals.flash.error){ %>
         <div class="error message">
-            <%= error %>
+            <%= flash.error %>
         </div>
         <% } %>
             <form action="/musics" method="post">
