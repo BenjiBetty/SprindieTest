@@ -43,7 +43,8 @@ header img {
 
 /* FORMULAIRE */
 
-.error.message {
+.error.message,
+.success.message {
     position: absolute;
     top: 30vh;
     left: 50vw;

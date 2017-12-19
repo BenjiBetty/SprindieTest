@@ -1,0 +1,16 @@
+<% include header %>
+    <% if (locals.flash && locals.flash.success){ %>
+        <div class="success message">
+            <%= flash.success %>
+        </div>
+        <% } %>
+            <div class="musiques">
+                <h3>Musiques</h3>
+                <% for ( title of music ){%>
+                    <div class="test">
+                        <% music.title %>
+                    </div>
+                    <% } %>
+            </div>
+
+            <% include footer %>
