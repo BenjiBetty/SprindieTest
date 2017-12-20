@@ -1,5 +1,5 @@
 let connection = require('../database/db');
-class Songs {
+module.exports = class Songs {
     static create(title, band, url, cb) {
         connection.query('INSERT INTO music SET ?', { title: title, band: band, url: url }, (err, result) => {
             console.log(err)
@@ -14,5 +14,3 @@ class Songs {
         })
     }
 }
-
-module.exports = Songs
