@@ -4,7 +4,7 @@ let mysql = require('mysql')
 let urlencodedParser = bodyParser.urlencoded({ extended: false });
 let express = require('express')
 let app = express()
-let db = require('./models/songsdb')
+let db = require('./models/song')
     // MOTEUR DE TEMPLATES
 app.set('view engine', 'ejs')
 
@@ -31,8 +31,9 @@ app.get('/add', function(request, response) {
     response.render('addsongs') //On affiche la page addsongs.ejs qui est le template de l'accueil
 })
 app.get('/musics', function(request, response) {
-    Songs.all(function() {
-        response.render('songsview', { title: title, band: band, url: url })
+    let Song = require('./models/song')
+    Song.all(function(songs) {
+        response.render('songsview', { songs: songs })
     })
 })
 
@@ -42,9 +43,9 @@ app.post('/musics', (request, response) => {
         request.flash('error', "Vous n'avez pas rempli tous les champs, réessayez")
         response.redirect('/add')
     } else {
-        let Songs = require('./models/songsdb');
+        let Song = require('./models/song')
         let req = request.body;
-        Songs.create(req.newtitle, req.newband, req.newurl, function() {
+        Song.create(req.newtitle, req.newband, req.newurl, function() {
             request.flash('success', "Votre musique est publiée")
             response.redirect('/musics')
         })

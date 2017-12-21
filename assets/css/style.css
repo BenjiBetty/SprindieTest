@@ -1,3 +1,13 @@
+/* latin */
+
+@font-face {
+    font-family: 'Contrail One';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Contrail One'), local('ContrailOne-Regular'), url(https://fonts.gstatic.com/s/contrailone/v7/b41KxjgiyqX-hkggANDU6Ogdm0LZdjqr5-oayXSOefg.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215;
+}
+
 body {
     color: #E8DF0F;
     background-color: #333333;
@@ -14,6 +24,8 @@ body {
 
 header h1 {
     text-transform: uppercase;
+    font-family: 'Contrail One', cursive;
+    font-size: 2em;
 }
 
 header nav {
@@ -71,4 +83,27 @@ form label {
 
 form input {
     margin-bottom: 30px;
+}
+
+
+/* Bibilothèque */
+
+ul {
+    list-style: none;
+}
+
+.cols-titles {
+    display: flex;
+}
+
+.cols-titles li {
+    border: none;
+    font-weight: bold;
+    margin-right: 200px;
+}
+
+li {
+    text-align: left;
+    border-top: 1px solid;
+    color: #E8DF0F;
 }

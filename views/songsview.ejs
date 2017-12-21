@@ -6,9 +6,18 @@
         <% } %>
             <div class="musiques">
                 <h3>Musiques</h3>
-                <% for ( title of music ){%>
+                <ul class="cols-titles">
+                    <li>Titre</li>
+                    <li>Groupe</li>
+                </ul>
+                <% for ( song of songs ){%>
                     <div class="test">
-                        <% music.title %>
+                        <ul>
+                            <li>
+                                <%= song.title %>
+                                    <%=  song.band %>
+                            </li>
+                        </ul>
                     </div>
                     <% } %>
             </div>
