@@ -10,16 +10,18 @@
                     <li>Titre</li>
                     <li>Groupe</li>
                 </ul>
-                <% for ( song of songs ){%>
-                    <div class="test">
-                        <ul>
+
+                <div class="test">
+                    <ul>
+                        <% for ( song of songs ){%>
                             <li>
                                 <%= song.title %>
                                     <%=  song.band %>
                             </li>
-                        </ul>
-                    </div>
-                    <% } %>
+                            <% } %>
+                    </ul>
+                </div>
+
             </div>
 
             <% include footer %>

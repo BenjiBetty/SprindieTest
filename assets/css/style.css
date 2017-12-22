@@ -14,9 +14,11 @@ body {
     text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     margin: 0 auto;
-    width: 100vw;
-    height: 100vh;
-    position: relative;
+    width: 100%;
+}
+
+html {
+    padding: 0;
 }
 
 
@@ -26,12 +28,16 @@ header h1 {
     text-transform: uppercase;
     font-family: 'Contrail One', cursive;
     font-size: 2em;
+    width: auto;
 }
 
 header nav {
-    width: 100vw;
+    width: 100%;
     height: auto;
 }
+
+
+/* laurent gérad c'est mon idole */
 
 .logo-block {
     width: 100%;
@@ -90,6 +96,9 @@ form input {
 
 ul {
     list-style: none;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .cols-titles {
@@ -106,4 +115,5 @@ li {
     text-align: left;
     border-top: 1px solid;
     color: #E8DF0F;
+    padding: 10px;
 }
