@@ -1,15 +1,17 @@
-let session = require('express-session')
-let bodyParser = require('body-parser')
-let mysql = require('mysql')
+let session = require('express-session');
+let bodyParser = require('body-parser');
+let mysql = require('mysql');
 let urlencodedParser = bodyParser.urlencoded({ extended: false });
-let express = require('express')
-let app = express()
-let db = require('./models/song')
+let express = require('express');
+let app = express();
+let jquery = require('jquery');
+let db = require('./models/song');
     // MOTEUR DE TEMPLATES
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
 
 // MIDDLEWARES
-app.use(express.static('assets')) //On définit le dossier contenant les fichiers statiques
+app.use(express.static('public')) //On définit le dossier contenant les fichiers statiques
+app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(session({
