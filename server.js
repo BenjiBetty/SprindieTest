@@ -5,6 +5,9 @@ let urlencodedParser = bodyParser.urlencoded({ extended: false });
 let express = require('express');
 let app = express();
 let jquery = require('jquery');
+let multer  = require('multer');
+let upload = multer({ dest: 'public/uploads/' });
+let path = require('path');
 let db = require('./models/song');
     // MOTEUR DE TEMPLATES
 app.set('view engine', 'ejs');
@@ -41,12 +44,12 @@ app.get('/musics', function(request, response) {
 
 //CRUD
 app.post('/musics', (request, response) => {
-    if (request.body.newtitle === undefined || request.body.newtitle === '' || request.body.newband === undefined || request.body.newband === '' || request.body.newurl === undefined || request.body.newurl === '') {
+    let req = request.body;
+    if (req.newtitle === undefined || req.newtitle === '' || req.newband === undefined || req.newband === '' || req.newurl === undefined || req.newurl === '') {
         request.flash('error', "Vous n'avez pas rempli tous les champs, réessayez")
         response.redirect('/add')
     } else {
         let Song = require('./models/song')
-        let req = request.body;
         Song.create(req.newtitle, req.newband, req.newurl, function() {
             request.flash('success', "Votre musique est publiée")
             response.redirect('/musics')
