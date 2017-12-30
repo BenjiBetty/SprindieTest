@@ -6,15 +6,14 @@ let express = require('express');
 let app = express();
 let jquery = require('jquery');
 let multer  = require('multer');
-let upload = multer({ dest: 'public/uploads/' });
 let path = require('path');
 let db = require('./models/song');
     // MOTEUR DE TEMPLATES
 app.set('view engine', 'ejs');
 
 // MIDDLEWARES
-app.use(express.static('public')) //On définit le dossier contenant les fichiers statiques
-app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
+app.use(express.static('./public')) //On définit le dossier contenant les fichiers statiques
+app.use('/jquery', express.static(__dirname + './node_modules/jquery/dist/'));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(session({
@@ -57,5 +56,58 @@ app.post('/musics', (request, response) => {
     }
 })
 
+// Set The Storage Engine
+const storage = multer.diskStorage({
+    destination: './public/uploads/',
+    filename: function(req, file, cb){
+      cb(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+  });
+  
+  // Init Upload
+  const upload = multer({
+    storage: storage,
+    limits:{fileSize: 1000000},
+    fileFilter: function(req, file, cb){
+      checkFileType(file, cb);
+    }
+  }).single('filetoupload');
+  
+  // Check File Type
+  function checkFileType(file, cb){
+    // Allowed ext
+    const filetypes = /jpeg|jpg|png|gif/;
+    // Check ext
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    // Check mime
+    const mimetype = filetypes.test(file.mimetype);
+  
+    if(mimetype && extname){
+      return cb(null,true);
+    } else {
+      cb('Error: Images Only!');
+    }
+  }
+  
+  app.post('/musics', (req, res) => {
+    upload(req, res, (err) => {
+      if(err){
+        res.render('addsongs', {
+          msg: err
+        });
+      } else if(req.file == undefined){
+        res.render('addsongs', {
+          msg: 'Error: No File Selected!'
+        });
+      } else {
+        res.render('songsview', {
+          msg: 'File Uploaded!',
+          file: `uploads/${req.file.filename}`
+        });
+      }
+    });
+  });
+
 // START THE SERVER
-app.listen(8080);
+let port = 8080
+app.listen(port, () => console.log(`Server started on port ${port}`));
