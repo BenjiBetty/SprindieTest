@@ -5,16 +5,13 @@
             <%= flash.error %>
         </div>
         <% } %>
-            <form action="/musics" method="post" enctype="multipart/form-data">
+            <form action="/musics" method="post">
                 <label for="newtitle">Title</label>
                 <input type="text" name="newtitle" id="newtitle">
                 <label for="newband">Band</label>
                 <input type="text" name="newband" id="newband">
                 <label for="newurl">Url</label>
                 <input type="text" name="newurl" id="newurl">
-                
-                <input type="file" name="filetoupload" id="">
-
                 <input type="submit" value="VALIDER">
             </form>
 

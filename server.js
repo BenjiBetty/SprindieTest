@@ -5,10 +5,10 @@ let urlencodedParser = bodyParser.urlencoded({ extended: false });
 let express = require('express');
 let app = express();
 let jquery = require('jquery');
-let multer  = require('multer');
+let multer = require('multer');
 let path = require('path');
 let db = require('./models/song');
-    // MOTEUR DE TEMPLATES
+// MOTEUR DE TEMPLATES
 app.set('view engine', 'ejs');
 
 // MIDDLEWARES
@@ -27,6 +27,9 @@ app.use(require('./middlewares/flash'))
 // MY ROUTES
 app.get('/', function(request, response) {
     response.render('index') // On affiche la page index.ejs qui est le template de l'accueil
+})
+app.get('/upload', function(request, response) {
+    response.render('upload')
 })
 app.get('/add', function(request, response) {
     if (request.session.error) {
@@ -59,54 +62,34 @@ app.post('/musics', (request, response) => {
 // Set The Storage Engine
 const storage = multer.diskStorage({
     destination: './public/uploads/',
-    filename: function(req, file, cb){
-      cb(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    filename: function(req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
-  });
-  
-  // Init Upload
-  const upload = multer({
+});
+
+// Init Upload
+const upload = multer({
     storage: storage,
-    limits:{fileSize: 1000000},
-    fileFilter: function(req, file, cb){
-      checkFileType(file, cb);
-    }
-  }).single('filetoupload');
-  
-  // Check File Type
-  function checkFileType(file, cb){
-    // Allowed ext
-    const filetypes = /jpeg|jpg|png|gif/;
-    // Check ext
-    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    // Check mime
-    const mimetype = filetypes.test(file.mimetype);
-  
-    if(mimetype && extname){
-      return cb(null,true);
-    } else {
-      cb('Error: Images Only!');
-    }
-  }
-  
-  app.post('/musics', (req, res) => {
+}).single('filetoupload');
+
+app.post('/add', upload, (req, res, next) => {
     upload(req, res, (err) => {
-      if(err){
-        res.render('addsongs', {
-          msg: err
-        });
-      } else if(req.file == undefined){
-        res.render('addsongs', {
-          msg: 'Error: No File Selected!'
-        });
-      } else {
-        res.render('songsview', {
-          msg: 'File Uploaded!',
-          file: `uploads/${req.file.filename}`
-        });
-      }
+        if (err) {
+            res.render('upload', {
+                msg: err
+            });
+        } else if (req.file == undefined) {
+            res.render('upload', {
+                msg: 'Error: No File Selected!'
+            });
+        } else {
+            res.render('addsongs', {
+                msg: 'File Uploaded!',
+                file: `uploads/${req.file.filename}`
+            });
+        }
     });
-  });
+});
 
 // START THE SERVER
 let port = 8080
