@@ -13,6 +13,12 @@ class Song {
             cb(rows)
         })
     }
+    static delete(cb) {
+        connection.query('DELETE FROM music', (err, rows) => {
+            if (err) throw err
+            cb(result);
+        })
+    }
 }
 
 module.exports = Song;

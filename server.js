@@ -70,7 +70,7 @@ const storage = multer.diskStorage({
 // Init Upload
 const upload = multer({
     storage: storage,
-}).single('filetoupload');
+}).single('music');
 
 app.post('/add', upload, (req, res, next) => {
     upload(req, res, (err) => {
