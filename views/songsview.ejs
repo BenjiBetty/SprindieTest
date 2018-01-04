@@ -16,9 +16,13 @@
                     <ul>
                         <% for ( song of songs ){%>
                             <li>
+                            <%= song.id %>
                                 <%= song.title %>
                                     <%=  song.band %>
-                                        <a href="/musics/delete">✘</a>
+                                    <form action="/musics" method="delete"></form>
+                                        <input type="hidden">
+                                        <input type="submit" value="SUPPRIMER">
+                                    </form>
                             </li>
                             <% } %>
                     </ul>

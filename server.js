@@ -59,6 +59,16 @@ app.post('/musics', (request, response) => {
     }
 })
 
+app.delete('/musics', (request, response) => {
+    let Song = require('./models/song')
+         /*Song.delete(req.id, function() {
+              request.flash('success', "Votre musique est supprimée")
+              response.redirect('/musics')
+          })*/
+          console.log(req.id)
+  })
+  
+
 // Set The Storage Engine
 const storage = multer.diskStorage({
     destination: './public/uploads/',

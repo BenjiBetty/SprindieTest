@@ -14,7 +14,7 @@ class Song {
         })
     }
     static delete(cb) {
-        connection.query('DELETE FROM music', (err, rows) => {
+        connection.query('DELETE FROM music WHERE id = ?', [req.body.id], (err, rows) => {
             if (err) throw err
             cb(result);
         })

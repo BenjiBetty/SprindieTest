@@ -73,16 +73,6 @@ header img {
     width: auto;
 }
 
-form {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    width: 30%;
-    top: 60vh;
-    left: 50vw;
-    transform: translate(-50%, -50%);
-}
-
 form label {
     text-align: left;
 }
@@ -117,3 +107,4 @@ li {
     color: #E8DF0F;
     padding: 10px;
 }
+
