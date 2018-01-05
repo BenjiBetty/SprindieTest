@@ -1,13 +1,13 @@
-let session = require('express-session');
-let bodyParser = require('body-parser');
-let mysql = require('mysql');
-let urlencodedParser = bodyParser.urlencoded({ extended: false });
-let express = require('express');
-let app = express();
-let jquery = require('jquery');
-let multer = require('multer');
-let path = require('path');
-let db = require('./models/song');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const mysql = require('mysql');
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
+const express = require('express');
+const app = express();
+const jquery = require('jquery');
+const multer = require('multer');
+const path = require('path');
+const db = require('./models/song');
 // MOTEUR DE TEMPLATES
 app.set('view engine', 'ejs');
 

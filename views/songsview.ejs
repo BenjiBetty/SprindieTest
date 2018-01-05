@@ -19,9 +19,13 @@
                                 <%= song.id %>
                                     <%= song.title %>
                                         <%=  song.band %>
-                                            <form action="/musics/delete/<%= song.id %>" method="post">
-                                                <input type="submit" value="SUPPRIMER">
-                                            </form>
+                                            <%=  song.url %>
+                                                <form action="/musics/delete/<%= song.id %>" method="post">
+                                                    <input type="submit" value="SUPPRIMER">
+                                                </form>
+                                                <form action="/musics/update/<%= song.id %>" method="post">
+                                                    <input type="submit" value="MODIFIER">
+                                                </form>
                             </li>
                             <% } %>
                     </ul>
