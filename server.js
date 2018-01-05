@@ -44,7 +44,7 @@ app.get('/musics', function(request, response) {
     })
 })
 
-//CRUD
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////CRUD
 app.post('/musics', (request, response) => {
     let req = request.body;
     if (req.newtitle === undefined || req.newtitle === '' || req.newband === undefined || req.newband === '' || req.newurl === undefined || req.newurl === '') {
@@ -59,15 +59,17 @@ app.post('/musics', (request, response) => {
     }
 })
 
-app.delete('/musics', (request, response) => {
+app.post('/musics/delete/:id', (request, response) => {
     let Song = require('./models/song')
-         /*Song.delete(req.id, function() {
-              request.flash('success', "Votre musique est supprimée")
-              response.redirect('/musics')
-          })*/
-          console.log(req.id)
-  })
-  
+    let req = request.params
+
+    Song.delete(req.id, function() {
+        request.flash('success', "Votre musique est supprimée")
+        response.redirect('/musics')
+    })
+})
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////FINCRUD
 
 // Set The Storage Engine
 const storage = multer.diskStorage({
