@@ -50,6 +50,7 @@ app.post('/musics', (request, response) => {
     if (req.newtitle === undefined || req.newtitle === '' || req.newband === undefined || req.newband === '' || req.newurl === undefined || req.newurl === '') {
         request.flash('error', "Vous n'avez pas rempli tous les champs, réessayez")
         response.redirect('/add')
+        console.log('music')
     } else {
         let Song = require('./models/song')
         Song.create(req.newtitle, req.newband, req.newurl, function() {
@@ -95,10 +96,12 @@ app.post('/add', upload, (req, res, next) => {
                 msg: 'Error: No File Selected!'
             });
         } else {
+            let musicPath = req.file.path;
             res.render('addsongs', {
                 msg: 'File Uploaded!',
-                file: `uploads/${req.file.filename}`
+                file: `uploads/${musicPath}`
             });
+            console.log(musicPath)
         }
     });
 });
