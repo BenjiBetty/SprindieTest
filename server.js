@@ -24,7 +24,6 @@ app.get('/musics', function(request, response) {
     })
 })
 
-
 // MOTEUR DE TEMPLATES
 app.set('view engine', 'ejs');
 
@@ -41,6 +40,9 @@ app.use(session({
 }))
 app.use(require('./middlewares/flash'))
 
+app.get('/musics/update/:id', function(request, response) {
+    response.render('modifysong')
+})
 
 ////////////////////////////////////////////////////////////////////CRUD
 app.post('/musics', (request, response) => {
@@ -48,25 +50,14 @@ app.post('/musics', (request, response) => {
     if (req.newtitle === undefined || req.newtitle === '' || req.newband === undefined || req.newband === '' || req.newurl === undefined || req.newurl === '') {
         request.flash('error', "Vous n'avez pas rempli tous les champs, réessayez")
         response.redirect('/add')
+        console.log('music')
     } else {
         Song.create(req.newtitle, req.newband, req.newurl, function() {
             request.flash('success', "Votre musique est publiée")
             response.redirect('/musics')
         })
     }
-    response.render('songsview')
 })
-
-//UPDATE
-app.post('/musics', function(request, response) {
-    let req = request.params
-    Song.update(req.id, function(songs) {
-        response.render('updatesong', { songs: songs })
-        response.redirect('/musics')
-    })
-})
-
-//DELETE
 app.post('/musics/delete/:id', (request, response) => {
     let req = request.params
     Song.delete(req.id, function() {
@@ -75,7 +66,20 @@ app.post('/musics/delete/:id', (request, response) => {
     })
 })
 
-
+//UPDATE
+app.post('/musics', function(request, response) {
+    let req = request.body;
+    if (req.newtitle === undefined || req.newtitle === '' || req.newband === undefined || req.newband === '' || req.newurl === undefined || req.newurl === '') {
+        request.flash('error', "Vous n'avez pas rempli tous les champs, réessayez")
+        response.redirect('/musics/update/:id')
+        console.log('music')
+    } else {
+        Song.update(req.newtitle, req.newband, req.newurl, function() {
+            request.flash('success', "Votre musique est modifiée")
+            response.redirect('/musics')
+        })
+    }
+})
 
 /////////////////////////////////////////////////////////////FINCRUD
 
@@ -83,7 +87,7 @@ app.post('/musics/delete/:id', (request, response) => {
 const storage = multer.diskStorage({
     destination: './public/uploads/',
     filename: function(req, file, cb) {
-        cb(null, file.originalname + '-' + Date.now() + path.extname(file.originalname));
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
 });
 
@@ -98,7 +102,7 @@ app.post('/add', upload, (req, res, next) => {
             res.render('upload', {
                 msg: err
             });
-        } else if (req.file === undefined) {
+        } else if (req.file == undefined) {
             res.render('upload', {
                 msg: 'Error: No File Selected!'
             });
