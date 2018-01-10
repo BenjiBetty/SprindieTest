@@ -7,7 +7,23 @@ const app = express();
 const jquery = require('jquery');
 const multer = require('multer');
 const path = require('path');
-const db = require('./models/song');
+const Song = require('./models/song');
+
+
+//CONTROLLERS
+const adminUser = require('./controllers/admin');
+
+//ROUTES
+const adminRoutes = require('./routes/adminRoutes')
+app.use('/', adminRoutes)
+
+app.get('/musics', function(request, response) {
+    const Song = require('./models/song');
+    Song.all(function(songs) {
+        response.render('songsview', { songs: songs })
+    })
+})
+
 // MOTEUR DE TEMPLATES
 app.set('view engine', 'ejs');
 
@@ -24,27 +40,8 @@ app.use(session({
 }))
 app.use(require('./middlewares/flash'))
 
-// MY ROUTES
-app.get('/', function(request, response) {
-    response.render('index') // On affiche la page index.ejs qui est le template de l'accueil
-})
-app.get('/upload', function(request, response) {
-    response.render('upload')
-})
-app.get('/add', function(request, response) {
-    if (request.session.error) {
-        response.locals.error = request.session.error
-    }
-    response.render('addsongs') //On affiche la page addsongs.ejs qui est le template de l'accueil
-})
-app.get('/musics', function(request, response) {
-    let Song = require('./models/song')
-    Song.all(function(songs) {
-        response.render('songsview', { songs: songs })
-    })
-})
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////CRUD
+////////////////////////////////////////////////////////////////////CRUD
 app.post('/musics', (request, response) => {
     let req = request.body;
     if (req.newtitle === undefined || req.newtitle === '' || req.newband === undefined || req.newband === '' || req.newurl === undefined || req.newurl === '') {
@@ -52,25 +49,21 @@ app.post('/musics', (request, response) => {
         response.redirect('/add')
         console.log('music')
     } else {
-        let Song = require('./models/song')
         Song.create(req.newtitle, req.newband, req.newurl, function() {
             request.flash('success', "Votre musique est publiée")
             response.redirect('/musics')
         })
     }
 })
-
 app.post('/musics/delete/:id', (request, response) => {
-    let Song = require('./models/song')
     let req = request.params
-
     Song.delete(req.id, function() {
         request.flash('success', "Votre musique est supprimée")
         response.redirect('/musics')
     })
 })
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////FINCRUD
+/////////////////////////////////////////////////////////////FINCRUD
 
 // Set The Storage Engine
 const storage = multer.diskStorage({
