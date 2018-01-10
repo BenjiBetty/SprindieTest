@@ -40,6 +40,9 @@ app.use(session({
 }))
 app.use(require('./middlewares/flash'))
 
+app.get('/musics/update/:id', function(request, response) {
+    response.render('modifysong')
+})
 
 ////////////////////////////////////////////////////////////////////CRUD
 app.post('/musics', (request, response) => {
@@ -61,6 +64,21 @@ app.post('/musics/delete/:id', (request, response) => {
         request.flash('success', "Votre musique est supprimée")
         response.redirect('/musics')
     })
+})
+
+//UPDATE
+app.post('/musics', function(request, response) {
+    let req = request.body;
+    if (req.newtitle === undefined || req.newtitle === '' || req.newband === undefined || req.newband === '' || req.newurl === undefined || req.newurl === '') {
+        request.flash('error', "Vous n'avez pas rempli tous les champs, réessayez")
+        response.redirect('/musics/update/:id')
+        console.log('music')
+    } else {
+        Song.update(req.newtitle, req.newband, req.newurl, function() {
+            request.flash('success', "Votre musique est modifiée")
+            response.redirect('/musics')
+        })
+    }
 })
 
 /////////////////////////////////////////////////////////////FINCRUD
