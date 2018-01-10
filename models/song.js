@@ -15,11 +15,11 @@ class Song {
                 cb(rows)
             })
         }
-        // UPDATE
+        // UPDATE   
     static update(id, cb) {
-            connection.query('UPDATE FROM music WHERE id = ?', id, (err, rows) => {
+            connection.query('SELECT * FROM music WHERE id = ?', id, (err, rows) => {
                 if (err) throw err
-                cb(rows);
+                cb(result);
             })
         }
         // DELETE
