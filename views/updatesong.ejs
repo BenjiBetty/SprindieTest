@@ -1,0 +1,18 @@
+<% include header %>
+
+    <% if (locals.flash && locals.flash.error){ %>
+        <div class="error message">
+            <%= flash.error %>
+        </div>
+        <% } %>
+            <form action="/musics/update/:id" method="post">
+                <label for="newtitle">Title</label>
+                <input type="text" name="newtitle" id="newtitle" value="<%= song.title %>">
+                <label for="newband">Band</label>
+                <input type="text" name="newband" id="newband" value="<%= song.band %>">
+                <label for="newurl">Url</label>
+                <input type="text" name="newurl" id="newurl" value="<%= song.url %>">
+                <input type="submit" value="VALIDER">
+            </form>
+
+            <% include footer %>
